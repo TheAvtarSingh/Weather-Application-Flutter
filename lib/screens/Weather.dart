@@ -28,10 +28,6 @@ Widget upperWeather(IconData icon, String temp, String cityName) {
           ),
         ),
         SizedBox(height: 20.0),
-        Text(
-          "Additional Information",
-          style: TextStyle(fontSize: 25.0),
-        ),
       ],
     ),
   );

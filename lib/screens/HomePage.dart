@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/screens/moreWeather.dart';
 
 import '../data/http_helper.dart';
 import '../data/weather.dart';
@@ -49,6 +50,7 @@ class _DataUpdateState extends State<DataUpdate> {
                         : upperWeather(
                             Icons.wb_sunny_rounded, "${data!.temp}", location),
 
+                // moreWeather("${data!.main}", "${data!.description}"),
                 additionalInfo("${data!.wind}", "${data!.humidity}",
                     "${data!.pressure}", "${data!.feels_like}"),
                 // DummyWeather(Icons.wb_sunny_rounded, "26.4", location),

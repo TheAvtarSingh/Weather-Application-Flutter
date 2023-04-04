@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/data/http_helper.dart';
+import 'package:weather_app/data/location/locationHelper.dart';
 import 'package:weather_app/data/weather.dart';
+import 'package:weather_app/screens/locationPage.dart';
+import 'package:weather_app/screens/moreWeather.dart';
 
 import 'screens/Weather.dart';
 import 'screens/additionalInfo.dart';
+import 'screens/getYourLocation.dart';
 
+LocationHelper locationClass = LocationHelper();
 var location = "Faridabad";
+var wannaSeach = "";
 
 void main(List<String> args) {
   runApp(HomePage());
@@ -22,13 +28,19 @@ class _HomePageState extends State<HomePage> {
     return MaterialApp(
       theme: ThemeData(fontFamily: 'SF'),
       title: "Weather Application",
-      home: ScaffoldBar(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => ScaffoldBar(),
+        '/getLocation': (context) => const YourLocation(),
+      },
+      // home: ScaffoldBar(),
       debugShowCheckedModeBanner: false,
     );
   }
 }
 
 class ScaffoldBar extends StatefulWidget {
+  // final String fetchedLocation;
   const ScaffoldBar({super.key});
 
   @override
@@ -43,28 +55,11 @@ class _ScaffoldBarState extends State<ScaffoldBar> {
     data = await helper.getCurrentWeather(location);
   }
 
-  // onLocationChange() {
-  //   setState(() async {
-  //     data = await helper.getCurrentWeather(location);
-  //     data!.cityname = "Faridabadi";
-  //   });
-  // }
-
-  /*  @override
-  void initState() {
-    super.initState();
-    // start fetching
-
-    getData().then((data) {
-      setState(() {
-        location = location;
-      });
-    });
-  } */
-
   @override
   Widget build(BuildContext context) {
-    setState(() {});
+    setState(() {
+      // location = widget.fetchedLocation;
+    });
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
@@ -92,6 +87,9 @@ class _ScaffoldBarState extends State<ScaffoldBar> {
                           onPressed: () {
                             setState(() {
                               location = location;
+                              // if (widget.fetchedLocation == null) {
+                              //   location = widget.fetchedLocation;
+                              // }
                             });
                           },
                           child: Text("Press to Refresh Location"),
@@ -111,9 +109,14 @@ class _ScaffoldBarState extends State<ScaffoldBar> {
                                 "${data!.cityname}")
                             : upperWeather(Icons.wb_sunny_rounded,
                                 "${data!.temp}", "${data!.cityname}"),
-
+                    Center(child: moreWeather(data!.main, data!.description)),
+                    AdditionalInfl(),
                     additionalInfo("${data!.wind}", "${data!.humidity}",
                         "${data!.pressure}", "${data!.feels_like}"),
+                    SizedBox(
+                      height: 15.0,
+                    ),
+                    LocationButton()
 
                     // DummyWeather(Icons.wb_sunny_rounded, "26.4", location),
                   ],
@@ -163,13 +166,19 @@ class _SearchBarState extends State<SearchBar> {
               borderSide: BorderSide(width: 2, color: Colors.black),
               borderRadius: BorderRadius.circular(20.0)),
         ),
-        onSubmitted: (value) {
-          setState(() {
-            location = locationField.text;
-            // widget.getData();
-          });
-          // getData().then((value) => {print("Id that was loaded: $value")});
-        },
+        onTapOutside: (event) => setState(() {
+          location = locationField.text;
+        }),
+
+        // onSubmitted: (value) {
+        //   setState(() {
+        //     location = locationField.text;
+        // onEditingComplete: () => setState(() {
+        //   location = locationField.text;
+        // }),//     // widget.getData();
+        //   });
+        //   // getData().then((value) => {print("Id that was loaded: $value")});
+        // },
       ),
     );
   }
@@ -181,4 +190,21 @@ class _SearchBarState extends State<SearchBar> {
 
     setState(() {});
   } */
+}
+
+class AdditionalInfl extends StatelessWidget {
+  const AdditionalInfl({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Padding(
+      padding: const EdgeInsets.only(bottom: 20.0),
+      child: Center(
+        child: Text(
+          "Additional Information",
+          style: TextStyle(fontSize: 25.0),
+        ),
+      ),
+    );
+  }
 }

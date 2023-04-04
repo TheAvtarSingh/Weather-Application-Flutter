@@ -21,10 +21,10 @@ class HttpHelper {
 
   Future<Weather>? getCurrentWeather(String? location) async {
     var endpoint = Uri.parse(
-        "http://api.openweathermap.org/data/2.5/weather?q=$location&APPID=55c034d85d818c1ba983661fb5cca0c9&units=metric");
+        "https://api.openweathermap.org/data/2.5/weather?q=$location&APPID=55c034d85d818c1ba983661fb5cca0c9&units=metric");
     var response = await http.get(endpoint);
     var body = jsonDecode(response.body);
-    // print("I am Helper ${Weather.fromJson(body).cityname}");
+    print("I am Helper ${Weather.fromJson(body)}");
 
     return Weather.fromJson(body);
   }
